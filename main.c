@@ -19,7 +19,6 @@ void userCreateCSV(const char *filename) {
 }
 
 void userAddtoCSV(const char *filename) {
-    int choice = 1;
     int i;
     printf("Quantos dados deseja adicionar?: ");
     scanf("%d", &i);
@@ -33,8 +32,6 @@ void userAddtoCSV(const char *filename) {
         addToCSV(filename, data);
         i--;
     }
-
-    // TODO add loop for multiple questions
     readCSV(filename);
 
 }
