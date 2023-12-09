@@ -1,3 +1,9 @@
+/* Alunos:
+ * Daisy Cerqueira Reis
+ * Danilo Carneiro RIbeiro
+ * Ludmilla Souza Dias de Abreu
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,7 +12,6 @@ void createCSV();
 void readCSV();
 void addToCSV();
 void updateCSV();
-
 
 void userCreateCSV(const char *filename) {
     char header[1024];
