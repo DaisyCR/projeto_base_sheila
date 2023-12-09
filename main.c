@@ -74,11 +74,11 @@ void userDeleteCellCSV(const char* filename) {
 
 int displayMenu(const char *filename) {
     printf("Arquivo: %s\n", filename);
-    printf("1 - Create\n"
-           "2 - Read\n"
-           "3 - Add\n"
-           "4 - Update\n"
-           "5 - Delete\n"
+    printf("1 - Criar novo arquivo\n"
+           "2 - Ler arquivo\n"
+           "3 - Adicionar dados\n"
+           "4 - Atualizar dados\n"
+           "5 - Apagar dados\n"
            "6 - Sair\n");
     printf("Escolha uma das opções: ");
     int input = 0;
