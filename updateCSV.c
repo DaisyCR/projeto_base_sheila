@@ -2,57 +2,58 @@
 #include <stdlib.h>
 #include <string.h>
 
-void updateCSV(const char *file_path, int row_index, int col_index, const char *new_value) {
-    if (row_index == 0) {
-        printf("Warning: Updating header values may affect the interpretation of the CSV file.\n");
+void updateCell(FILE *tmp, char *buffer, int colIndex, const char *newValue) {
+    char *token = strtok(buffer, ",");
+
+    for (int col = 0; col < colIndex; col++) {
+        fprintf(tmp, "%s,", token);
+        token = strtok(NULL, ",");
+    }
+
+    fprintf(tmp, "%s", newValue);
+    token = strtok(NULL, ",");
+
+    while (token != NULL) {
+        fprintf(tmp, ",%s", token);
+        token = strtok(NULL, ",");
+    }
+}
+
+void updateCSV(const char *filename, int rowIndex, int colIndex, const char *newValue) {
+    if (rowIndex == 0) {
+        printf("Aviso! Alterar o valor do cabeçalho pode afetar a intepretação do arquivo.\n");
         return;
     }
 
-    FILE *file = fopen(file_path, "r");
+    FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        perror("Error opening file");
-        return;
+        perror("Erro ao abrir o arquivo");
+        exit(EXIT_FAILURE);
     }
 
-    // Create a temporary file to store the modified content
-    FILE *temp_file = fopen("temp.csv", "w");
-    if (temp_file == NULL) {
-        perror("Error creating temporary file");
+    FILE *tmp = fopen("tmp.csv", "w");
+    if (tmp == NULL) {
+        perror("Error ao criar o arquivo temporario");
         fclose(file);
         return;
     }
 
     char buffer[1024];
-    int current_row = 0;
+    int currentRow = 0;
 
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
-        if (current_row == row_index) {
-            // Modify the specified cell in the current row
-            char *token = strtok(buffer, ",");
-            for (int col = 0; col < col_index; col++) {
-                fprintf(temp_file, "%s,", token);
-                token = strtok(NULL, ",");
-            }
-            fprintf(temp_file, "%s", new_value);
-            token = strtok(NULL, ",");
-            while (token != NULL) {
-                fprintf(temp_file, ",%s", token);
-                token = strtok(NULL, ",");
-            }
+        if (currentRow == rowIndex) {
+            updateCell(tmp, buffer, colIndex, newValue);
         } else {
-            // Copy the unchanged row to the temporary file
-            fprintf(temp_file, "%s", buffer);
+            fprintf(tmp, "%s", buffer);
         }
-
-        current_row++;
+        currentRow++;
     }
 
     fclose(file);
-    fclose(temp_file);
+    fclose(tmp);
 
-    // Replace the original file with the temporary file
-    remove(file_path);
-    rename("temp.csv", file_path);
-
-    printf("Value at row %d and column %d updated successfully.\n", row_index, col_index);
+    remove(filename);
+    rename("tmp.csv", filename);
+    printf("Valor na linha %d e coluna %d atualizado com sucesso.\n", rowIndex, colIndex);
 }
