@@ -1,6 +1,6 @@
 /* Alunos:
  * Daisy Cerqueira Reis
- * Danilo Carneiro RIbeiro
+ * Danilo Carneiro Ribeiro
  * Ludmilla Souza Dias de Abreu
  */
 
